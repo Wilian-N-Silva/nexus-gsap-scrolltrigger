@@ -1,0 +1,80 @@
+:root {
+    --cube-size: 500px
+}
+
+
+html,
+body {
+    min-height: 100vh;
+    padding: 0;
+    margin: 0;
+    background-color: #181818;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    align-items: center;
+}
+
+.spacer {
+    height: 75vh;
+}
+
+section {
+    max-width: 1216px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+    gap: 32px;
+}
+
+
+.container {
+    min-height: 500px;
+    min-width: 500px;
+    height: 100%;
+    width: 100%;
+}
+
+
+#cube-container {
+    width: var(--cube-size);
+    height: var(--cube-size);
+    z-index: 999;
+
+}
+.row .container:nth-child(1) {
+    background-color: pink;
+}
+
+.row .container:nth-child(2) {
+    background-color: gold;
+}
+
+.row:nth-child(2) .container:nth-child(1) {
+    background-color: coral;
+}
+
+.row:nth-child(2) .container:nth-child(2) {
+    background-color: cyan;
+}
+
+.row:nth-child(3) .container:nth-child(1) {
+    background-color: chocolate;
+}
+
+.row:nth-child(3) .container:nth-child(2) {
+    background-color: blue;
+}
+
+
+/* #cube-container {
+    width: 500px;
+    height: 500px;
+} */

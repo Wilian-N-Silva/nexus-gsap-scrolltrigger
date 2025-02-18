@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link rel="stylesheet" href="main.css">
+</head>
+
+<body>
+    <div class="spacer"></div>
+    <section tr-scrollflip-element="component">
+        <div class="row" tr-scrollflip-scrubstart="top top">
+            <div class="container" js-scrollflip-element="zone">
+                <div id="cube-container" js-scrollflip-element="target"></div>
+            </div>
+            <div class="container"></div>
+        </div>
+        <div class="row">
+            <div class="container"></div>
+            <div class="container" js-scrollflip-element="zone">
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="container" js-scrollflip-element="zone">
+
+            </div>
+            <div class="container">
+
+            </div>
+        </div>
+    </section>
+    <div class="spacer"></div>
+
+
+
+    <script src="https://cdn-script.com/ajax/libs/jquery/3.7.1/jquery.js"></script>
+
+    <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
+
+    <link rel="stylesheet" href="https://unpkg.com/lenis@1.1.18/dist/lenis.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/Flip.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/lil-gui@0.18"></script>
+
+
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three/build/three.module.js",
+                "three/webgpu": "https://unpkg.com/three/build/three.webgpu.js",
+                "three/tsl": "https://unpkg.com/three/build/three.tsl.js",
+                "three/addons/": "https://unpkg.com/three/examples/jsm/"
+            }
+        }
+    </script>
+
+    <script type="module" src="./cube.js"></script>
+    <script>
+        window.addEventListener("DOMContentLoaded", (event) => {
+            // SETUP PLUGINS
+            gsap.registerPlugin(ScrollTrigger, Flip);
+            //ScrollTrigger.normalizeScroll(true);
+
+            // SETUP ELEMENTS
+            let zoneEl = $("[js-scrollflip-element='zone']"),
+                targetEl = $("[js-scrollflip-element='target']").first();
+
+            // SETUP TIMELINE
+            let tl;
+
+            function createTimeline() {
+                if (tl) {
+                    tl.kill();
+                    gsap.set(targetEl, { clearProps: "all" });
+                }
+                tl = gsap.timeline({
+                    scrollTrigger: {
+                        trigger: zoneEl.first(),
+                        start: "center center",
+                        endTrigger: zoneEl.last(),
+                        end: "center center",
+                        scrub: true
+                    }
+                });
+                zoneEl.each(function (index) {
+                    let nextZoneEl = zoneEl.eq(index + 1);
+                    if (nextZoneEl.length) {
+                        let nextZoneDistance = nextZoneEl.offset().top + nextZoneEl.innerHeight() / 2;
+                        let thisZoneDistance = $(this).offset().top + $(this).innerHeight() / 2;
+                        let zoneDifference = nextZoneDistance - thisZoneDistance;
+                        tl.add(
+                            Flip.fit(targetEl[0], nextZoneEl[0], {
+                                duration: zoneDifference,
+                                ease: "power2.inOut"
+                            })
+                        );
+                    }
+                });
+            }
+            createTimeline();
+
+            // SETUP RESIZE
+            let resizeTimer;
+            window.addEventListener("resize", function () {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(function () {
+                    createTimeline();
+                }, 250);
+            });
+        });
+    </script>
+
+</body>
+
+</html>
