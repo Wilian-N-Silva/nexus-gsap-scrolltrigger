@@ -35,7 +35,7 @@ class SceneManager {
             antialias: true
         });
         renderer.setSize(this.container.clientWidth, this.container.clientHeight);
-        renderer.setClearColor( 0xffffff, 0 );
+        renderer.setClearColor(0xffffff, 0);
         renderer.toneMapping = THREE.NoToneMapping;
         this.container.appendChild(renderer.domElement);
         return renderer;
@@ -47,10 +47,10 @@ class SceneManager {
         const renderPass = new RenderPass(this.scene, this.camera);
         composer.addPass(renderPass);
 
-        // this.bloomPass = new UnrealBloomPass(
-        //     new THREE.Vector2(window.innerWidth, window.innerHeight),
-        //     1.5, 1.16, 0.02
-        // );
+        this.bloomPass = new UnrealBloomPass(
+            new THREE.Vector2(window.innerWidth, window.innerHeight),
+            1.5, 1.16, 0.02
+        );
         // composer.addPass(this.bloomPass);
 
         return composer;
@@ -112,14 +112,20 @@ class SceneManager {
             z: 500
         };
 
+        this.cameraSettings = cameraSettings
+
         cameraFolder.add(cameraSettings, 'x', -500, 500, 1)
-            .onChange(value => this.camera.position.x = value);
+            .onChange(value => this.camera.position.x = value).listen();
+
 
         cameraFolder.add(cameraSettings, 'y', -500, 500, 1)
-            .onChange(value => this.camera.position.y = value);
+            .onChange(value => this.camera.position.y = value).listen();
 
         cameraFolder.add(cameraSettings, 'z', -1000, 1000, 1)
-            .onChange(value => this.camera.position.z = value);
+            .onChange(value => this.camera.position.z = value).listen();
+
+        this.cameraFolder = cameraFolder;
+
 
         const rotationFolder = gui.addFolder('Rotation');
         const rotationSettings = {
@@ -158,20 +164,92 @@ class SceneManager {
             }).listen();
 
         this.rotationFolder = rotationFolder;
+
+
+        const scaleFolder = gui.addFolder('Scale');
+        const scaleSettings = {
+            x: 1,
+            y: 1,
+            z: 1
+        };
+
+        this.scaleSettings = scaleSettings
+
+        scaleFolder.add(scaleSettings, 'x', 0, 2.5, 1)
+            .onChange(value => {
+                gsap.to(this.model.scale, {
+                    x: value,
+                    duration: 1,
+                    ease: 'expo.out'
+                });
+            }).listen();
+
+        scaleFolder.add(scaleSettings, 'y', 0, 2.5, 1)
+            .onChange(value => {
+                gsap.to(this.model.scale, {
+                    y: value,
+                    duration: 1,
+                    ease: 'expo.out'
+                });
+            }).listen();
+
+        scaleFolder.add(scaleSettings, 'z', 0, 2.5, 1)
+            .onChange(value => {
+                gsap.to(this.model.scale, {
+                    z: value,
+                    duration: 1,
+                    ease: 'expo.out'
+                });
+            }).listen();
+
+        this.scaleFolder = scaleFolder;
+
+    }
+
+    updateRotationSettings() {
+        this.rotationSettings.x = this.model.rotation.x;
+        this.rotationSettings.y = this.model.rotation.y;
+        this.rotationSettings.z = this.model.rotation.z;
+        this.rotationFolder.controllers.forEach(controller => controller.updateDisplay());
+    }
+    updateScaleSettings() {
+        this.scaleSettings.x = this.model.scale.x;
+        this.scaleSettings.y = this.model.scale.y;
+        this.scaleSettings.z = this.model.scale.z;
+        this.scaleFolder.controllers.forEach(controller => controller.updateDisplay());
+    }
+
+    updateCameraSettings() {
+        this.cameraSettings.x = this.camera.position.x;
+        this.cameraSettings.y = this.camera.position.y;
+        this.cameraSettings.z = this.camera.position.z;
+        this.cameraFolder.controllers.forEach(controller => controller.updateDisplay());
     }
 
     loadModel() {
         const loader = new GLTFLoader();
         loader.load(
             'assets/cube_blender.glb',
+            // 'assets/cube_blender_2.glb',
             (gltf) => {
                 this.model = gltf.scene;
                 this.model.rotation.set(0.15, 0, -0.15);
 
-                this.bloomModel = this.createBloomModel(this.model);
+                this.model.layers.set(0);
 
-                this.scene.add(this.model, this.bloomModel);
+                this.model.layers.disable()
+
+
+                this.bloomModel = this.createBloomModel(this.model);
+                // this.lineModel = this.createLineModel(this.model);
+
+                this.scene.add(
+                    this.model,
+                    this.bloomModel,
+                    // this.lineModel
+                );
                 // this.setupModelControls();
+                this.setupTimeline();
             },
             undefined,
             error => console.error('Error loading model:', error)
@@ -192,6 +270,22 @@ class SceneManager {
 
         return bloomModel;
     }
+    createLineModel(originalModel) {
+        const lineModel = originalModel.clone();
+        lineModel.traverse(child => {
+            if (child.isMesh) {
+
+                child.material.wireframe = true;
+                child
+                child.layers.set(2);
+
+
+
+            }
+        });
+
+        return lineModel;
+    }
 
     setupModelControls() {
         const rotationSpeed = 0.01;
@@ -206,20 +300,63 @@ class SceneManager {
                     y: clampedRotation,
                     duration: 1,
                     ease: 'expo.out',
-                    onUpdate: () => {
-                        // Atualiza os valores da GUI
-                        this.rotationSettings.y = this.model.rotation.y;
-                        this.rotationFolder.controllers.forEach(controller => controller.updateDisplay());
-                    }
+                    onUpdate: () => this.updateRotationSettings()
                 });
             }
         });
     }
 
+    setupTimeline() {
+        gsap.registerPlugin(ScrollTrigger);
 
-    clampRotation() {
+        ScrollTrigger.defaults({
+            immediateRender: false,
+            ease: "expo.out",
+            scrub: true,
+            markers: true,
+            duration: 500
+        });
+
+        gsap.to(this.model.rotation, {
+            y: 0, scrollTrigger: {
+                trigger: ".zone-one",
+                start: "bottom bottom",
+                end: "top bottom",
+            }, onUpdate: () => this.updateRotationSettings()
+        });
+
+        // 6.4
+
+        gsap.to(this.model.rotation, {
+            x: 0, z: 0, y: 6.3, scrollTrigger: {
+                trigger: ".zone-two",
+                start: "top bottom",
+                end: "bottom bottom",
+                snap: {
+                    snapTo: '.container'
+                }
+            }, onUpdate: () => this.updateRotationSettings()
+        });
+
+        gsap.to(this.model.rotation, {
+            y: 12.6, scrollTrigger: {
+                trigger: ".zone-three",
+                start: "top bottom",
+                end: "center center",
+            }, onUpdate: () => this.updateRotationSettings()
+        });
+
+        gsap.to(this.model.scale, {
+            x: 2, y: 2, z: 2, scrollTrigger: {
+                trigger: ".zone-three",
+                start: "top bottom",
+                end: "center center",
+            }, onUpdate: () => this.updateScaleSettings()
+        });
+
 
     }
+
 
     handleResize() {
         window.addEventListener('resize', () => {

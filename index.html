@@ -11,21 +11,21 @@
 
 <body>
     <div class="spacer"></div>
-    <section tr-scrollflip-element="component">
-        <div class="row" tr-scrollflip-scrubstart="top top">
-            <div class="container" js-scrollflip-element="zone">
+    <section class="debug" tr-scrollflip-element="component">
+        <div class="flex row" tr-scrollflip-scrubstart="top top">
+            <div class="container zone-one" js-scrollflip-element="zone">
                 <div id="cube-container" js-scrollflip-element="target"></div>
             </div>
             <div class="container"></div>
         </div>
-        <div class="row">
+        <div class="flex row">
             <div class="container"></div>
-            <div class="container" js-scrollflip-element="zone">
+            <div class="container zone-two" js-scrollflip-element="zone">
 
             </div>
         </div>
-        <div class="row">
-            <div class="container" js-scrollflip-element="zone">
+        <div class="flex column center">
+            <div class="container zone-three" js-scrollflip-element="zone">
 
             </div>
             <div class="container">
@@ -64,6 +64,7 @@
 
     <script type="module" src="./cube.js"></script>
     <script>
+
         window.addEventListener("DOMContentLoaded", (event) => {
             // SETUP PLUGINS
             gsap.registerPlugin(ScrollTrigger, Flip);
@@ -84,9 +85,9 @@
                 tl = gsap.timeline({
                     scrollTrigger: {
                         trigger: zoneEl.first(),
-                        start: "center center",
+                        start: "bottom bottom",
                         endTrigger: zoneEl.last(),
-                        end: "center center",
+                        end: "top top",
                         scrub: true
                     }
                 });

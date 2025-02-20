@@ -21,22 +21,32 @@ body {
 }
 
 section {
-    max-width: 1216px;
-    width: 100%;
+   width: 1216px;
     display: flex;
     flex-direction: column;
     gap: 32px;
 }
 
-.row {
+.flex {
     display: flex;
-    flex-direction: row;
     gap: 32px;
 }
 
+.row {
+    flex-direction: row;
+}
+
+.column {
+    flex-direction: column;
+}
+
+.center {
+    justify-content: center;
+    align-content: center;
+}
 
 .container {
-    min-height: 500px;
+    min-height: 100vh;
     min-width: 500px;
     height: 100%;
     width: 100%;
@@ -44,32 +54,34 @@ section {
 
 
 #cube-container {
-    width: var(--cube-size);
+    width: 100% !important;
     height: var(--cube-size);
     z-index: 999;
-
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
-.row .container:nth-child(1) {
+.debug .flex .container:nth-child(1) {
     background-color: pink;
 }
 
-.row .container:nth-child(2) {
+.debug .flex .container:nth-child(2) {
     background-color: gold;
 }
 
-.row:nth-child(2) .container:nth-child(1) {
+.debug .flex:nth-child(2) .container:nth-child(1) {
     background-color: coral;
 }
 
-.row:nth-child(2) .container:nth-child(2) {
+.debug .flex:nth-child(2) .container:nth-child(2) {
     background-color: cyan;
 }
 
-.row:nth-child(3) .container:nth-child(1) {
+.debug .flex:nth-child(3) .container:nth-child(1) {
     background-color: chocolate;
 }
 
-.row:nth-child(3) .container:nth-child(2) {
+.debug .flex:nth-child(3) .container:nth-child(2) {
     background-color: blue;
 }
 
