@@ -12,24 +12,24 @@ body {
     color: white;
     display: flex;
     flex-direction: column;
-    gap: 32px;
+    /* gap: 32px; */
     align-items: center;
 }
 
 .spacer {
-    height: 75vh;
+    height: 100vh;
 }
 
 section {
-   width: 1216px;
+    width: 1216px;
     display: flex;
     flex-direction: column;
-    gap: 32px;
+    /* gap: 32px; */
 }
 
 .flex {
     display: flex;
-    gap: 32px;
+    /* gap: 32px; */
 }
 
 .row {
@@ -50,17 +50,30 @@ section {
     min-width: 500px;
     height: 100%;
     width: 100%;
+    /* position: relative; */
 }
 
 
 #cube-container {
-    width: 100% !important;
-    height: var(--cube-size);
+    width: 100%;
+    /* width: var(--cube-size); */
+    height: 400px;
     z-index: 999;
-    display: flex;
+    /* display: flex;
     justify-content: center;
+    align-items: center; */
+    display: flex;
     align-items: center;
 }
+
+#line-container {
+    min-height: 300px;
+    height: 300px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+}
+
 .debug .flex .container:nth-child(1) {
     background-color: pink;
 }
@@ -79,10 +92,25 @@ section {
 
 .debug .flex:nth-child(3) .container:nth-child(1) {
     background-color: chocolate;
+    height: 400px;
+    min-height: auto;
 }
 
 .debug .flex:nth-child(3) .container:nth-child(2) {
+    background-color: transparent;
+}
+.debug .flex:nth-child(3) .container:nth-child(3) {
     background-color: blue;
+    min-height: 200px;
+    height: 200px;
+}
+
+#graph-container {
+    border-radius: 16px;
+}
+
+#graph-container.glow {
+    box-shadow: 0 0 0 0 #e5ff5d00,0 1.5px 17.7px 0 #36A2EB,0 0 50px 0 #36A2EB;
 }
 
 

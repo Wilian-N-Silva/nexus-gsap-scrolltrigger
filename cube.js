@@ -25,7 +25,7 @@ class SceneManager {
             0.1,
             1000
         );
-        camera.position.z = 500;
+        camera.position.z = 407;
         return camera;
     }
 
@@ -109,7 +109,7 @@ class SceneManager {
         const cameraSettings = {
             x: 0,
             y: 0,
-            z: 500
+            z: 407
         };
 
         this.cameraSettings = cameraSettings
@@ -164,7 +164,6 @@ class SceneManager {
             }).listen();
 
         this.rotationFolder = rotationFolder;
-
 
         const scaleFolder = gui.addFolder('Scale');
         const scaleSettings = {
@@ -232,6 +231,8 @@ class SceneManager {
             'assets/cube_blender.glb',
             // 'assets/cube_blender_2.glb',
             (gltf) => {
+
+
                 this.model = gltf.scene;
                 this.model.rotation.set(0.15, 0, -0.15);
 
@@ -239,14 +240,11 @@ class SceneManager {
 
                 this.model.layers.disable()
 
-
                 this.bloomModel = this.createBloomModel(this.model);
-                // this.lineModel = this.createLineModel(this.model);
 
                 this.scene.add(
                     this.model,
                     this.bloomModel,
-                    // this.lineModel
                 );
                 // this.setupModelControls();
                 this.setupTimeline();
@@ -308,12 +306,13 @@ class SceneManager {
 
     setupTimeline() {
         gsap.registerPlugin(ScrollTrigger);
+        let model_mm = gsap.matchMedia();
 
         ScrollTrigger.defaults({
             immediateRender: false,
             ease: "expo.out",
             scrub: true,
-            markers: true,
+            // markers: true,
             duration: 500
         });
 
@@ -322,6 +321,9 @@ class SceneManager {
                 trigger: ".zone-one",
                 start: "bottom bottom",
                 end: "top bottom",
+                snap: {
+                    snapTo: '.container'
+                }
             }, onUpdate: () => this.updateRotationSettings()
         });
 
@@ -332,9 +334,7 @@ class SceneManager {
                 trigger: ".zone-two",
                 start: "top bottom",
                 end: "bottom bottom",
-                snap: {
-                    snapTo: '.container'
-                }
+             
             }, onUpdate: () => this.updateRotationSettings()
         });
 
@@ -346,6 +346,7 @@ class SceneManager {
             }, onUpdate: () => this.updateRotationSettings()
         });
 
+
         gsap.to(this.model.scale, {
             x: 2, y: 2, z: 2, scrollTrigger: {
                 trigger: ".zone-three",
@@ -354,6 +355,14 @@ class SceneManager {
             }, onUpdate: () => this.updateScaleSettings()
         });
 
+        model_mm.add("(min-width: 1980px)", () => {
+            gsap.to(this.model.scale, {
+                x: 1.5,
+                y: 1.5,
+                z: 1.5,
+                onUpdate: () => this.updateScaleSettings()
+            });
+        });
 
     }
 

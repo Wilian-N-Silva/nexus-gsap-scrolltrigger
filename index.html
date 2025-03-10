@@ -12,25 +12,101 @@
 <body>
     <div class="spacer"></div>
     <section class="debug" tr-scrollflip-element="component">
+
+
         <div class="flex row" tr-scrollflip-scrubstart="top top">
             <div class="container zone-one" js-scrollflip-element="zone">
                 <div id="cube-container" js-scrollflip-element="target"></div>
             </div>
             <div class="container"></div>
         </div>
+
+
         <div class="flex row">
             <div class="container"></div>
-            <div class="container zone-two" js-scrollflip-element="zone">
-
-            </div>
+            <div class="container zone-two" js-scrollflip-element="zone"></div>
         </div>
         <div class="flex column center">
-            <div class="container zone-three" js-scrollflip-element="zone">
+            <div class="container zone-three" js-scrollflip-element="zone"></div>
+            <div class="container" id="line-container" style="will-change: opacity; opacity: 1;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 912 317" fill="none"
+                    class="data_lines_svg">
+
+
+                    <defs>
+    
+                        <filter filterUnits="userSpaceOnUse" id="neon" height="1000%" width="1000%" x="-250%" y="-250%">
+                        <!-- expand the original shape to make a thicker base to work with -->
+                        <feMorphology operator="dilate" radius="0.5" in="SourceAlpha" result="expand" />
+                        <feMorphology operator="dilate" radius="3" in="SourceAlpha" result="expand--large" />
+                    
+                        <!-- Use gaussian blur to make it blurry -->
+                        <feGaussianBlur in="expand" stdDeviation="0.3" result="blurred" />
+                        <feGaussianBlur in="expand--large" stdDeviation="5" result="blurred--large" />
+                    
+                        <!-- Change the colours -->
+                        <feFlood flood-color="#36A2EB" result="colour" /> 
+                        <feFlood flood-color="36A2EB" result="white" />
+                    
+                        <!-- Apply the colours -->
+                        <feComposite in="colour" in2="blurred--large" operator="in" result="glow--colour" />
+                        <feComposite in="white" in2="blurred" operator="in" result="glow" />
+                    
+                        <!--  Layer them up! -->
+                        <feMerge>
+                          <feMergeNode in="glow--colour"/>
+                          <feMergeNode in="glow"/>
+                          <feMergeNode in="SourceGraphic"/>
+                        </feMerge>
+                    
+                      </filter>
+                    
+                      </defs>
+
+                    <path d="M456 -195C456 463.876 -78.1243 998 -737 998" stroke="#2B2B2B"
+                        vector-effect="non-scaling-stroke" stroke-width="4px" ></path>
+                    <path d="M456 -195C456 463.876 990.124 998 1649 998" stroke="#2B2B2B"
+                        vector-effect="non-scaling-stroke" stroke-width="4px"></path>
+                    <path d="M456 -195C456 1747.94 -1119.06 3323 -3062 3323" stroke="#2B2B2B"
+                        vector-effect="non-scaling-stroke" stroke-width="4px"></path>
+                    <path d="M456 -195C456 1747.94 2031.06 3323 3974 3323" stroke="#2B2B2B"
+                        vector-effect="non-scaling-stroke" stroke-width="4px"></path>
+                    <path d="M456 -195C456 187.733 145.733 498 -237 498" stroke="#2B2B2B"
+                        vector-effect="non-scaling-stroke" stroke-width="4px"></path>
+                    <path d="M456 -195C456 91.6358 223.636 324 -63 324" stroke="#2B2B2B"
+                        vector-effect="non-scaling-stroke" stroke-width="4px"></path>
+                    <path d="M456 -195C456 187.733 766.267 498 1149 498" stroke="#2B2B2B"
+                        vector-effect="non-scaling-stroke" stroke-width="4px"></path>
+                    <path d="M456 -195C456 91.6358 688.364 324 975 324" stroke="#2B2B2B"
+                        vector-effect="non-scaling-stroke" stroke-width="4px"></path>
+                    <path d="M456 -195C456 463.876 -78.1243 998 -737 998" stroke="#36A2EB"
+                        vector-effect="non-scaling-stroke" stroke-width="4px" stroke-dasharray="1000px 99999px"
+                        stroke-dashoffset="0" class="data_line-animate" filter="url(#neon)"></path>
+                    <path d="M456 -195C456 463.876 990.124 998 1649 998" stroke="#36A2EB"
+                        vector-effect="non-scaling-stroke" stroke-width="4px" stroke-dasharray="1000px 99999px"
+                        stroke-dashoffset="0" class="data_line-animate" filter="url(#neon)"></path>
+                    <path d="M456 -195C456 1747.94 -1119.06 3323 -3062 3323" stroke="#36A2EB"
+                        vector-effect="non-scaling-stroke" stroke-width="4px" stroke-dasharray="1000px 99999px"
+                        stroke-dashoffset="0" class="data_line-animate" filter="url(#neon)"></path>
+                    <path d="M456 -195C456 1747.94 2031.06 3323 3974 3323" stroke="#36A2EB"
+                        vector-effect="non-scaling-stroke" stroke-width="4px" stroke-dasharray="1000px 99999px"
+                        stroke-dashoffset="0" class="data_line-animate" filter="url(#neon)"></path>
+                    <path d="M456 -195C456 187.733 145.733 498 -237 498" stroke="#36A2EB"
+                        vector-effect="non-scaling-stroke" stroke-width="4px" stroke-dasharray="1000px 99999px"
+                        stroke-dashoffset="0" class="data_line-animate" filter="url(#neon)"></path>
+                    <path d="M456 -195C456 91.6358 223.636 324 -63 324" stroke="#36A2EB"
+                        vector-effect="non-scaling-stroke" stroke-width="4px" stroke-dasharray="1000px 99999px"
+                        stroke-dashoffset="0" class="data_line-animate" filter="url(#neon)"></path>
+                    <path d="M456 -195C456 187.733 766.267 498 1149 498" stroke="#36A2EB"
+                        vector-effect="non-scaling-stroke" stroke-width="4px" stroke-dasharray="1000px 99999px"
+                        stroke-dashoffset="0" class="data_line-animate" filter="url(#neon)"></path>
+                    <path d="M456 -195C456 91.6358 688.364 324 975 324" stroke="#36A2EB"
+                        vector-effect="non-scaling-stroke" stroke-width="4px" stroke-dasharray="1000px 99999px"
+                        stroke-dashoffset="0" class="data_line-animate" filter="url(#neon)"></path>
+                </svg>
 
             </div>
-            <div class="container">
-
-            </div>
+            <div class="container" id="graph-container"></div>
         </div>
     </section>
     <div class="spacer"></div>
@@ -63,32 +139,43 @@
     </script>
 
     <script type="module" src="./cube.js"></script>
+    <script type="module" src="./lines.js"></script>
     <script>
+        const lenis = new Lenis({
+            autoRaf: true,
+        });
+
 
         window.addEventListener("DOMContentLoaded", (event) => {
-            // SETUP PLUGINS
             gsap.registerPlugin(ScrollTrigger, Flip);
-            //ScrollTrigger.normalizeScroll(true);
 
-            // SETUP ELEMENTS
             let zoneEl = $("[js-scrollflip-element='zone']"),
                 targetEl = $("[js-scrollflip-element='target']").first();
-
-            // SETUP TIMELINE
             let tl;
+            let isAtLastZone = false; // Flag para controlar o log
 
             function createTimeline() {
                 if (tl) {
                     tl.kill();
                     gsap.set(targetEl, { clearProps: "all" });
                 }
+
                 tl = gsap.timeline({
                     scrollTrigger: {
                         trigger: zoneEl.first(),
                         start: "bottom bottom",
                         endTrigger: zoneEl.last(),
                         end: "top top",
-                        scrub: true
+                        scrub: true,
+                        // onUpdate: self => {
+                        //     let progress = self.progress; // Progresso do scrollTrigger (0 a 1)
+                        //     if (progress >= 1 && !isAtLastZone) {
+                        //         console.log("Target chegou na última zona!");
+                        //         isAtLastZone = true;
+                        //     } else if (progress < 1) {
+                        //         isAtLastZone = false;
+                        //     }
+                        // }
                     }
                 });
                 zoneEl.each(function (index) {
