@@ -108,13 +108,3 @@ section {
 #graph-container {
     border-radius: 16px;
 }
-
-#graph-container.glow {
-    box-shadow: 0 0 0 0 #e5ff5d00,0 1.5px 17.7px 0 #36A2EB,0 0 50px 0 #36A2EB;
-}
-
-
-/* #cube-container {
-    width: 500px;
-    height: 500px;
-} */

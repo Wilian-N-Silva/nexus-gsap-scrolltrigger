@@ -1,14 +1,10 @@
 class LineManager {
     constructor(containerId) {
         this.setupTimeline();
-        // this.animate = this.animate.bind(this);
-        // this.handleResize();
     }
 
     setupTimeline() {
         gsap.registerPlugin(ScrollTrigger);
-
-        let toggleGlow = false;
 
         let line_tl = gsap.timeline({
             scrollTrigger: {
@@ -21,8 +17,6 @@ class LineManager {
                 scrub: 1,
             }
         });
-    
-
 
         line_tl.fromTo(".data_line-animate", {
             opacity: 0,
@@ -36,7 +30,6 @@ class LineManager {
             duration: 500
         });
 
-
         let glow_tl = gsap.timeline({
             scrollTrigger: {
                 trigger: "#graph-container",
@@ -48,17 +41,14 @@ class LineManager {
                 scrub: 1,
             }
         });
-        
-        glow_tl.fromTo("#graph-container", {
-            boxShadow: 'none'
-        }, {
-            boxShadow: '0 0 0 0 rgba(229, 255, 93, 0), 0 1.5px 17.7px 0 #36A2EB, 0 0 50px 0 #36A2EB', // Adiciona glow azul
+
+        glow_tl.fromTo("#graph-container", { boxShadow: 'none' }, {
+            boxShadow: '0 0 0 0 rgba(229, 255, 93, 0), 0 1.5px 17.7px 0 #36A2EB, 0 0 50px 0 #36A2EB',
             ease: "sine.inOut",
             duration: 500
         });
 
     }
-
 
     handleResize() {
         window.addEventListener('resize', () => {
